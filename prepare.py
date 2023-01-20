@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 
@@ -8,6 +9,11 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import RobustScaler
 from sklearn.preprocessing import QuantileTransformer
+from sklearn.metrics import mean_squared_error
+from math import sqrt
+
+from sklearn.feature_selection import SelectKBest, f_regression, RFE
+from sklearn.linear_model import LinearRegression
 
 
 
@@ -207,3 +213,80 @@ def plot_categorical_and_continuous_vars(train, cont_vars, cat_vars):
 def plot_variable_pairs(train):
     sns.pairplot(data=train.sample(2000), diag_kind='hist', kind='reg')
     plt.show()
+    
+
+def rmse(preds, target):
+    return sqrt(mean_squared_error(preds['actual'], preds[target]))
+
+
+def select_kbest(df, cont, cat, y, k):
+    
+    '''
+    This function takes a data frame, a list of continuous variables, a list of categorical variables,
+    the target variable, and top number of features wanted. It scales the continuous variables and 
+    creates X_train and y_train data frames. It then creates dummies for the categorical variables. 
+    After all the data has been manipulated it runs the SelectKBest for f_regression and returns 
+    the top k number of variables.
+    '''
+    
+    # fitting and scaling the continuous variables
+    mms = MinMaxScaler()
+    df[cont] = mms.fit_transform(df[cont])
+    
+    # creating X_train and y_train data frames
+    X_df_scaled = df.drop(columns=[y])
+    y_df = df[y]
+    
+    # creating dummies for the categorical variables
+    X_df_scaled = pd.get_dummies(X_df_scaled, columns=cat)
+    
+    # fitting the regression model to the data
+    f_selector = SelectKBest(f_regression, k=k)
+    f_selector.fit(X_df_scaled, y_df)
+    
+    # determining which variables are the top k variables
+    f_select_mask = f_selector.get_support()
+    
+    # returning data frame of the only the top k variables
+    return X_df_scaled.iloc[:,f_select_mask]
+
+
+def rfe(df, cont, cat, y, k):
+    
+    '''
+    This function takes a data frame, a list of continuous variables, a list of categorical variables,
+    the target variable, and top number of features wanted. It scales the continuous variables and 
+    creates X_train and y_train data frames. It then creates dummies for the categorical variables.
+    The function then runs the RFE function using linear regression to determine which features are best.
+    It returns a data frame with each features and the ranking for the user to determine which features
+    they want to use.
+    '''
+    
+    # fitting and scaling the continuous variables
+    mms = MinMaxScaler()
+    df[cont] = mms.fit_transform(df[cont])
+    
+    # creating X_train and y_train data frames
+    X_df_scaled = df.drop(columns=[y])
+    y_df = df[y]
+    
+    # creating dummies for the categorical variables
+    X_df_scaled = pd.get_dummies(X_df_scaled, columns=cat)
+        
+    # creating linear regressiong RFE model based on k number
+    lm = LinearRegression()
+    model = RFE(lm, n_features_to_select=k)
+    
+    # fitting model to scaled data
+    model.fit(X_df_scaled, y_df)
+    
+    # determine rankings for each feature
+    ranks = model.ranking_
+    columns = X_df_scaled.columns.tolist()
+    
+    # creating data frame of ranking and column names
+    feature_ranks = pd.DataFrame({'ranking':ranks,
+                                  'feature':columns})
+    
+    # returns created data frame of feature rankings
+    return feature_ranks.sort_values('ranking')
