@@ -9,7 +9,7 @@ Zillow is a real estate company that helps people find properties for sale/rent 
 - Deliever a report to a technical data science team
 
 ## Questions to answer
-- Is there a difference in price of the house between fips codes? If so, how much of a difference?
+- Is there a difference in price of the house between fips codes?
 - Does the number of bed/bath affect the property value?
 - Does when the property was built affect the value?
 - Does lot size affect property value?
