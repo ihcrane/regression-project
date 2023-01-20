@@ -1,7 +1,7 @@
 # Zillow Project
 
 ## Project Description
-Zillow is a real estate company that helps people find properties for sale/rent across the world. I have been tasked with creating a program that can more accurately determine the value of a home before it is posted for sale. I will only be looking at the properties that had a transaction in the year of 2017.
+Zillow is a real estate company that helps people find properties for sale/rent across the world. I have been tasked with creating a program that can more accurately determine the value of a home before it is posted for sale. I will only be looking at the properties that had a transaction in the year of 2017. The location for the properties is California. More specifically Los Angelos County, Orange County and Venture County.
 
 ## Project Goals
 - To discover the drivers of value of properties
@@ -26,7 +26,7 @@ I believe the main drivers behind the value of the properties is larger property
 - Develop a model using ML to determine churn based on the top 3 drivers
  - MVP will consist of one model per driver to test out which can most accurately predict churn
  - Post MVP will consist of taking most accurate and running it through multiple models
- - Goal is to achieve at least 80% accuracy with at least one model
+ - Goal is to achieve an RMSE better than the baseline
 - Draw and record conclusions
 
 ## Data Dictionary
