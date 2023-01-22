@@ -1,6 +1,7 @@
 from env import get_connection
 import pandas as pd
 import os
+from prepare import remove_outliers
 
 
 def get_zillow_data():
@@ -52,5 +53,7 @@ def wrangle_zillow():
     
     # drop duplicates
     df.drop_duplicates(inplace=True)
+    
+    df, var_fences = remove_outliers(df)
     
     return df
