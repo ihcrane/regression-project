@@ -60,12 +60,12 @@ def anova_test(df, col):
         
         f, p = stats.f_oneway(la_county, orange_county, ventura_county)
     else:
-        bed_1 = df[df['bed']==1]['tax_value']
         bed_2 = df[df['bed']==2]['tax_value']
         bed_3 = df[df['bed']==3]['tax_value']
         bed_4 = df[df['bed']==4]['tax_value']
+        bed_5 = df[df['bed']==5]['tax_value']
         
-        f, p = stats.f_oneway(bed_1, bed_2, bed_3, bed_4)
+        f, p = stats.f_oneway(bed_2, bed_3, bed_4, bed_5)
                     
     
     alpha = .05
