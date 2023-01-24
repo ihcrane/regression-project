@@ -23,7 +23,7 @@ I believe the main drivers behind the value of the properties is larger property
 - Discover main drivers
  - First identify the drivers using statistical analysis
  - Create a pandas dataframe containing all relevant drivers as columns
-- Develop a model using ML to determine churn based on the top 3 drivers
+- Develop a model using ML to determine property value based on the top drivers
  - MVP will consist of one model per driver to test out which can most accurately predict churn
  - Post MVP will consist of taking most accurate and running it through multiple models
  - Goal is to achieve an RMSE better than the baseline
